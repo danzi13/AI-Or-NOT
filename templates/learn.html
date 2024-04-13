@@ -16,9 +16,9 @@
 
     <style>
         .navbar {
-            background-color: transparent; /* Change background color of the navbar */
-            color: black; /* Change text color of the navbar */
-            font-size: 16px; /* Adjust font size of the navbar */
+            background-color: transparent; 
+            color: grey; 
+            font-size: 16px; 
         }
 
         .navbar-brand {
@@ -26,7 +26,7 @@
         }
 
         .navbar-toggler-icon {
-            background-color: black; /* Change color of the toggler icon */
+            background-color: black; 
         }
 
         .button-link {
@@ -40,6 +40,11 @@
             display: inline-block; /* Set display to inline-block */
             font-size: 14px; /* Adjust font size */
             margin: 5px; /* Add margin */
+        }
+
+        img {
+            width: 300px;
+            height: auto;
         }
 
     </style>
@@ -73,6 +78,25 @@
         </div>
 
     </nav>
+
+    <h1>Welcome to the Learn Page</h1>
+    
+    <div>
+        {{ item.Title }} - {{ item.Description }}
+    </div>
+
+    <img src="/static/{{ item.image_path }}.png" alt="Image">
+
+    <br>
+    <br>
+    
+    <form action="/learn/{{ prev_id }}" method="get" style="display: inline;">
+        <button type="submit">Previous</button>
+    </form>
+    
+    <form action="/learn/{{ next_id }}" method="get" style="display: inline;">
+        <button type="submit">Next</button>
+    </form>
 
 
 </body>
