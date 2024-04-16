@@ -79,7 +79,7 @@ def quiz(id):
     # Handle POST request to update user's answer
     if request.method == 'POST':
         user_answer = request.form.get('answer')
-        user_answers[id]['answer'] = user_answer
+        user_answers[id-1]['answer'] = user_answer
     
     item = get_item_by_i(id)
     prev_id = (id - 1) % len(quiz_data)
@@ -101,14 +101,17 @@ def get_item_by_i(id):
     return None
 
 def calculate_score(user_answers):
-    total_questions = len(user_answers)
+    total_questions = len(user_answers) 
     correct_answers_count = 0
-    for user_answer in user_answers:
-        if user_answer.get('userA') == correct_answers[user_answer.get('id')]:
-            correct_answers_count += 1
-    percentage_score = (correct_answers_count / total_questions) * 100
-    return percentage_score
 
+
+    for i in range(total_questions):
+
+        if user_answers[i].get('answer') == correct_answers[i]['answer']:
+            correct_answers_count += 1
+
+    percentage_score = (correct_answers_count / (total_questions - 1)) * 100
+    return percentage_score
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', debug=True)
