@@ -15,94 +15,118 @@
 
 
     <style>
-        .navbar {
-            background-color: transparent; 
-            color: grey; 
-            font-size: 16px; 
-        }
-
-        .navbar-brand {
-            font-weight: bold; /* Adjust font weight of the navbar brand */
-        }
-
-        .navbar-toggler-icon {
-            background-color: black; 
-        }
-
-        .button-link {
-            color: white; /* Change color of the button text */
-            background-color: transparent; /* Make button background transparent */
-            border: none; /* Remove button border */
-            cursor: pointer; /* Change cursor to pointer on hover */
-            padding: 0; /* Remove padding */
-            margin: 0; /* Remove margin */
-            width: auto; /* Set width to auto */
-            display: inline-block; /* Set display to inline-block */
-            font-size: 14px; /* Adjust font size */
-            margin: 5px; /* Add margin */
-        }
 
         img {
             width: 300px;
             height: auto;
         }
 
+        body {
+            background-color: #DCEAF7;
+        }
+
+        .quiz {
+            margin-left: 3%;
+            margin-top:2%;
+            margin-bottom:1%;
+            font-size: 40px;
+            font-weight: light;
+        }
+
+        .q_num {
+            color: #747474;
+            font-size: 30px;
+            font-weight: light;
+            margin-left: 3%;
+            border-bottom: 10px solid #E59EDD; /* Adjust the color and thickness as needed */
+            padding-bottom: 5px;
+            margin-bottom: 2%;
+            max-width: 150px;
+        }
+
+        .question {
+            color: #E59EDD;
+            font-size: 20px;
+            font-weight: light;
+            margin-left: 3%;
+            max-width: 50%;
+            margin-bottom: 10px;
+        }
+
+
+        .image {
+            margin-left: 6%;
+            margin-bottom: 2%;
+            max-height: 400px;
+            height:250px;
+            width:auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .choices {
+            font-size: 25px;
+            margin-left:3%;
+            margin-bottom:2%;
+        }
+
+        .margin {
+            margin-left:3%;
+        }
+        .prev_btn {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 18px;
+            padding:10px 20px 10px 20px;
+        }
+        .next_btn {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 18px;
+            padding:10px 30px 10px 30px;
+        }
+
+        .quiz_btn {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 18px;
+            padding:10px 30px 10px 30px;
+            background-color: #E59EDD;
+        }
+
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-
-            <a class="navbar-brand" href="/">AI-or-NOT?</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div>
-                <form action="/quiz/0" method="get">
-                    <button class="button-link" type="submit">Quiz ></button>
-                </form>
-            </div>
-            <div>
-                <form action="/learn/0" method="get">
-                    <button class="button-link" type="submit">Learn ></button>
-                </form>
-            </div>
-            <div>
-                <form action="/game" method="get">
-                    <button class="button-link" type="submit">Game ></button>
-                </form>
-            </div>
-
-        </div>
-
-    </nav>
-
-
-    <h1>Welcome to the Quiz Page</h1>
     
-    <div>
-        {% if item.image_path %}
-            <img src="/static/{{ item.image_path }}.png" alt="Image">
-        {% endif %}
 
+    <div class="quiz">Quiz Page</div>
+
+    <div class="q_num">Question {{ next_id }}:</div>
+
+    <div class="question">{{ item.Question }}</div>
+    <div class="row">
+        {% if item.image_path %}
+        <div class="col-5">
+            <img class="image" src="/static/{{ item.image_path }}.png" alt="Image">
+        </div>
+        {% endif %}
         
-        <p>{{item.id}} {{ item.Question }}</p>
-        <form action="/quiz/{{ next_id }}" method="post">
+       
+        <form class="choices" action="/quiz/{{ next_id }}" method="post">
             {% for choice in item.choice %}
-            <label>
-                <input type="radio" name="answer" value="{{ choice.option }}">
-                {{ choice.option }}) {{ choice.selection }}
-            </label><br>
-            {% endfor %}
-            <button type="submit">Next</button>
+            <div class="col-12">
+                <label><input type="radio" name="answer" value="{{ choice.option }}">    {{ choice.selection }}</label>
+            </div>
+            {% endfor %} 
+</div>
+            <div class="row">
+                <button class="next_btn margin" type="submit">Next</button>
+            </div>
         </form>
+       
         <!-- bootstrap same as before <form action="/quiz/{{ prev_id }}" method="get" style="display: inline;">
             <button type="submit">Previous</button>
         </form>-->
-    </div>
-
+    
+    
 
     <br>
     <br>

@@ -16,7 +16,7 @@
 
     <style>
         body {
-            background-color: black;
+            background-color: #DCEAF7;
             color: white;
             text-align: center; /* Center align all content */
         }
@@ -37,38 +37,32 @@
         }
 
         .ai-text {
-            color: red;
+            color: black;
+            font-size: 40px;
+            margin-top:2%;
+            margin-bottom:1% ;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
 
-        .or-text {
-            color: white;
-        }
-
-        .not-text {
-            color: green;
-        }
 
         .button-link {
-            color: white;
+            color: #747474;
             background-color: transparent;
             border: none;
             cursor: pointer;
             padding: 0;
             margin: 0;
             width: auto;
-            display: inline-block;
-            font-size: 14px;
-            margin: 5px;
+            font-size: 18px;
         }
 
         .h3-button {
-            display: inline-block;
             padding: 15px 30px;
-            background-color: green;
-            margin: 25px;
+            background-color: #E8E8E8;
             cursor: pointer;
-            color: aliceblue;
+            color: #E59EDD;
             font-size: 25px;
+            border-color: #E8E8E8;
             
         }
 
@@ -78,11 +72,19 @@
             padding: 0;
         }
 
-        h1 {
-            padding-top: 55px;
-            font-size: 55px;
-            padding-bottom: 15px;
+        .score_title {
+            color:black;
+            font-size: 60px;
+            margin-top:3%;
+            margin-bottom: 1%;
         }
+
+        .score {
+            color:#E59EDD;
+            font-size: 30px;
+            margin-bottom: 2%;
+        }
+
 
         h3 {
             display: inline-block;
@@ -94,58 +96,103 @@
             padding-top: 25px;
         }
 
+        .nav-font{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .guide{
+            margin-right:5%;
+            padding:0;
+            font-size: 25px;
+        }
+        
+        .navbar{
+            background-color: #E8E8E8;
+            padding-bottom:1%;
+        }
+        
+        .subtext{
+            color: #747474;
+            font-size: 18px;
+            margin-bottom: 3%;
+        }
+
+        .home-btns{
+            background-color: #E8E8E8;
+            margin-right:10px;
+            padding-top:1%;
+            margin-bottom:0;
+            padding-bottom: 0;
+            padding-right:0;
+
+        }
+
+        .home_img {
+            justify-content: center;
+            align-items: center;
+            display: block;
+            margin-bottom:0;
+            padding-bottom:0;
+        }
+
+        img{
+            height:250px;
+            width:auto;
+            margin-bottom:0;
+            padding-bottom:0;
+        }
+
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        
 
-            <a class="navbar-brand" href="/">AI-or-NOT?</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <a class="navbar-brand nav-font guide" href="/">AI-or-NOT?</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div>
-                <form action="/quiz/0" method="get">
-                    <button class="button-link" type="submit">Quiz ></button>
-                </form>
-            </div>
-            <div>
-                <form action="/learn/0" method="get">
-                    <button class="button-link" type="submit">Learn ></button>
-                </form>
-            </div>
-            <div>
-                <form action="/game" method="get">
-                    <button class="button-link" type="submit">Game ></button>
-                </form>
-            </div>
-
+        <div class="guide">
+            <form action="/quiz/0" method="get">
+                <button class="button-link" type="submit">Quiz</button>
+            </form>
+        </div>
+        <div class="guide">
+            <form action="/learn/0" method="get">
+                <button class="button-link" type="submit">Learn</button>
+            </form>
+        </div>
+        <div class="guide">
+            <form action="/game" method="get">
+                <button class="button-link" type="submit">Game</button>
+            </form>
         </div>
 
+
     </nav>
+        <div class="score_title">Your Quiz Score</div>
+        <div class="score">Result: {{ score }}%</div>
 
-    <h1> 
-        <h1>Your Quiz Score</h1>
-        <p>Your score: {{ score }}%</p>
-    </h1>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-3 home-btns">
+            <form action="/learn/0" method="get">
+                <div class= "home_img"><img  src="/static/home_pic_1.png" alt="AI Image"></div>
+                <button class="h3-button btn" type="submit">Relearn AI</button>
+            </form>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-3 home-btns">
+            <form action="/quiz/0" method="get">
+                <div class="home_img"><img  src="/static/home_pic_2.png" alt="Quiz Image"></div>
+                <button class="h3-button btn" type="submit">Retry Quiz</button>
+            </form>
+        </div>
+        <div class="col-2"></div>
+   </div>
 
-
-    <h1><span class="ai-text">Learn more? </span> <span class="or-text">or</span> <span class="not-text">Quiz Again?</span></h1>
-
-    <h3>
-        <form action="/learn/0" method="get">
-            <button class="h3-button" type="submit">Learn ></button>
-        </form>
-    </h3>
-    <h3>
-        <form action="/quiz/0" method="get">
-            <button class="h3-button" type="submit">Quiz ></button>
-        </form>
-    </h3>
-
-    <h4>Can you determine whether an image has been generated by AI?</h4>
 
 </body>
 
