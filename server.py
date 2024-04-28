@@ -57,19 +57,27 @@ def main():
 def game():
     return render_template('game.html')
 
+@app.route('/quiz_home')
+def quiz_home():
+    return render_template('quiz_home.html')
+
 @app.route('/learn/<int:id>')
 def learn(id):
     global data
     item = get_item_by_id(id)
-    prev_id = (id - 1) % len(data)  
-    next_id = (id + 1) % len(data) 
-    return render_template('learn.html', item=item, prev_id=prev_id, next_id=next_id)
+    prev_id = (id - 1)
+    next_id = (id + 1)
+    if (item["id"] == len(data)-1):
+        return render_template('learn.html', item=item, prev_id=prev_id, next_id=next_id, quiz_time = True)
+    return render_template('learn.html', item=item, prev_id=prev_id, next_id=next_id, quiz_time = False)
 
 def get_item_by_id(id):
     for item in data:
         if item["id"] == id:
             return item
     return None
+
+
 
 @app.route('/quiz/<int:id>', methods=['GET', 'POST'])
 def quiz(id):
