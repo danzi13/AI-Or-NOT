@@ -1,4 +1,6 @@
 from flask import Flask, render_template, Response, request, jsonify
+import datetime
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -38,15 +40,15 @@ correct_answers = [
 ]
 
 user_answers = [
-    {"id":0, "answer": ""},
-    {"id":1, "answer": ""},
-    {"id":2, "answer": ""},
-    {"id":3, "answer": ""},
-    {"id":4, "answer": ""},
-    {"id":5, "answer": ""},
-    {"id":6, "answer": ""},
-    {"id":7, "answer": ""},
-    {"id":8, "answer": ""},
+    {"id":0, "answer": "","submittime":""},
+    {"id":1, "answer": "","submittime":""},
+    {"id":2, "answer": "","submittime":""},
+    {"id":3, "answer": "","submittime":""},
+    {"id":4, "answer": "","submittime":""},
+    {"id":5, "answer": "","submittime":""},
+    {"id":6, "answer": "","submittime":""},
+    {"id":7, "answer": "","submittime":""},
+    {"id":8, "answer": "", "submittime":""}
 ]
 
 @app.route('/')
@@ -86,8 +88,12 @@ def quiz(id):
     
     # Handle POST request to update user's answer
     if request.method == 'POST':
+        currentTime = datetime.now()
+        timestring = currentTime.strftime("%Y-%m-%d %H:%M:%S")
         user_answer = request.form.get('answer')
         user_answers[id-1]['answer'] = user_answer
+        user_answers[id-1]['submittime'] = timestring
+
     
     item = get_item_by_i(id)
     prev_id = (id - 1) % len(quiz_data)
