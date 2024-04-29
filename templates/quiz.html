@@ -11,7 +11,13 @@
     <!-- bootstrap same as before -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 
-    <script type="text/javascript" src="{{ url_for('static', filename = 'index.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'quiz.js') }}"></script>
+    <script>
+        let item = {{ item|tojson }} 
+        let next_id = {{ next_id|tojson }} 
+        let correct_answers = {{ correct_answers|tojson }}
+        let user_answers = {{ user_answers|tojson }} 
+    </script>
 
 
     <style>
@@ -91,6 +97,12 @@
             background-color: #E59EDD;
         }
 
+        .wrong_ans{
+            max-width: 50%;
+            font-size: 20px;
+            color:red;
+        }
+
     </style>
 </head>
 
@@ -110,15 +122,16 @@
         {% endif %}
         
        
-        <form class="choices" action="/quiz/{{ next_id }}" method="post">
+        <form class="choices">
             {% for choice in item.choice %}
             <div class="col-12">
-                <label><input type="radio" name="answer" value="{{ choice.option }}">    {{ choice.selection }}</label>
+                <label><input class="choice" type="radio" name="answer" value="{{ choice.option }}"> {{ choice.selection }}</label>
             </div>
             {% endfor %} 
-</div>
-            <div class="row">
-                <button class="next_btn margin" type="submit">Next</button>
+    
+    </div>
+            <div id="btn_row" class="row">
+                <button id="submitButton" class="next_btn margin" type="submit">Check</button>
             </div>
         </form>
        
