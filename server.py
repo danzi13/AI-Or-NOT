@@ -1,5 +1,4 @@
 from flask import Flask, render_template, Response, request, jsonify
-import datetime
 from datetime import datetime
 
 app = Flask(__name__)
@@ -28,27 +27,34 @@ quiz_data = [
 ]
 
 correct_answers = [
-    {"id":0, "answer": "B"},
-    {"id":1, "answer": "A"},
-    {"id":2, "answer": "B"},
-    {"id":3, "answer": "B"},
-    {"id":4, "answer": "A"},
-    {"id":5, "answer": "B"},
-    {"id":6, "answer": "A"},
-    {"id":7, "answer": "B"},
-    {"id":8, "answer": "B"},
+    {"id":0, "answer": "B", "reason":"This is real beacuse there are no repeated items, inconsitencies in background, weird fingers, or seemingly perfect skin or hair."},
+    {"id":1, "answer": "A", "reason":"This is fake because the finger are very off/odd"},
+    {"id":2, "answer": "B", "reason":"AI generated images have trouble blending foreground and background and also highly detailed textures is not necessarily indicative of AI gen images. So, duplication of objects is the correct answer as AI gen images lack diversity/organic variation."},
+    {"id":3, "answer": "B", "reason":"As like weird fingers, AI images generate things with imperfect symmetry and irregular patterns. Nothing was ever disccussed about lighting/shadows or color saturation."},
+    {"id":4, "answer": "A", "reason":"Fingers are often miss generated as they typically do not have realistic anatomy and appropriate proportions. Neither eyes nor feet were discussed about."},
+    {"id":5, "answer": "B", "reason":"Uniform texture and lack of pores is the same as smooth skin that is indicative of excessive manipulation or synthesis."},
+    {"id":6, "answer": "A", "reason":"The left images lack diversity and has visible repitition with two orange and two yellow fish and also has trouble blending foreground and background"},
+    {"id":7, "answer": "B", "reason":"The right image visible duplicates/repeats the archway multiple times over seemingly perfectly which is strongly indicative of AI generation"}
 ]
 
 user_answers = [
-    {"id":0, "answer": "","submittime":""},
-    {"id":1, "answer": "","submittime":""},
-    {"id":2, "answer": "","submittime":""},
-    {"id":3, "answer": "","submittime":""},
-    {"id":4, "answer": "","submittime":""},
-    {"id":5, "answer": "","submittime":""},
-    {"id":6, "answer": "","submittime":""},
-    {"id":7, "answer": "","submittime":""},
-    {"id":8, "answer": "", "submittime":""}
+    {"id":0, "answer": ""},
+    {"id":1, "answer": ""},
+    {"id":2, "answer": ""},
+    {"id":3, "answer": ""},
+    {"id":4, "answer": ""},
+    {"id":5, "answer": ""},
+    {"id":6, "answer": ""},
+    {"id":7, "answer": ""}
+]
+
+learn_amt = [
+    {"id":0, "times_visited": 0},
+    {"id":1, "times_visited": 0},
+    {"id":2, "times_visited": 0},
+    {"id":3, "times_visited": 0},
+    {"id":4, "times_visited": 0},
+    {"id":5, "times_visited": 0}
 ]
 
 @app.route('/')
@@ -61,11 +67,14 @@ def game():
 
 @app.route('/quiz_home')
 def quiz_home():
+    print(learn_amt)
     return render_template('quiz_home.html')
 
 @app.route('/learn/<int:id>')
 def learn(id):
     global data
+    global learn_amt
+    learn_amt[id]['times_visited'] += 1
     item = get_item_by_id(id)
     prev_id = (id - 1)
     next_id = (id + 1)
@@ -79,24 +88,19 @@ def get_item_by_id(id):
             return item
     return None
 
+@app.route('/update_userans', methods=['POST'])
+def update_variable():
+    global user_answers
+    data = request.get_json()
+    user_answers = data.get('user_answers')
+    return jsonify({'message': 'Variable updated on the server.'})
 
-
-@app.route('/quiz/<int:id>', methods=['GET', 'POST'])
+@app.route('/quiz/<int:id>', methods=['GET'])
 def quiz(id):
     global quiz_data
     global user_answers
-    
-    # Handle POST request to update user's answer
-    if request.method == 'POST':
-        currentTime = datetime.now()
-        timestring = currentTime.strftime("%Y-%m-%d %H:%M:%S")
-        user_answer = request.form.get('answer')
-        user_answers[id-1]['answer'] = user_answer
-        user_answers[id-1]['submittime'] = timestring
 
-    
     item = get_item_by_i(id)
-    prev_id = (id - 1) % len(quiz_data)
     next_id = (id + 1) % len(quiz_data)
 
     if next_id == 0:
@@ -105,8 +109,7 @@ def quiz(id):
         # Redirect to the score page with the calculated score
         return render_template('score.html', score=score)
     
-    return render_template('quiz.html', item=item, prev_id=prev_id, next_id=next_id)
-
+    return render_template('quiz.html', item=item, next_id=next_id, correct_answers=correct_answers, user_answers=user_answers)
 
 def get_item_by_i(id):
     for item in quiz_data:
